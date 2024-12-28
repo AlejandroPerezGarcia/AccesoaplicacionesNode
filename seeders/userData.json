@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "firstName": "Mateo",
+      "lastName": "Díaz",
+      "email": "mateo.diaz@correo.com"
+    },
+    {
+      "firstName": "Santiago",
+      "lastName": "Mejías",
+      "email": "santiago.mejias@correo.com"
+    },
+    {
+      "firstName": "Lucas",
+      "lastName": "Rojas",
+      "email": "lucas.rojas@correo.com"
+    },
+    {
+      "firstName": "Facundo",
+      "lastName": "Fernandez",
+      "email": "facundo.fernandez@correo.com"
+    }
+  ]
+}

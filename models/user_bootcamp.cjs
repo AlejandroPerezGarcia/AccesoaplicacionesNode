@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Bootcamp extends Model {
+  class User_bootcamp extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,27 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      const { User_bootcamp } = models
-      this.hasMany(User_bootcamp)
+      const { Users, Bootcamp } = models
+      this.belongsTo(Users)
+      this.belongsTo(Bootcamp)
+
     }
   }
-  Bootcamp.init({
-    title: {
-      type: DataTypes.STRING,
+  User_bootcamp.init({
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
-    cue: {
+    bootcamp_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        min: 5,
-        max: 10
-      }
+      allowNull: false
     },
-    description: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Bootcamp',
+    modelName: 'User_bootcamp',
   });
-  return Bootcamp;
+  return User_bootcamp;
 };

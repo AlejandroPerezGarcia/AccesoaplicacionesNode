@@ -1,6 +1,6 @@
 import * as db from '../models/index.cjs'
 
-const { Bootcamp } = db.default
+const { Bootcamp, Users, User_bootcamp } = db.default
 
 const BootcampsController = {}
 
@@ -33,12 +33,23 @@ BootcampsController.findAllBootcamp = async (req, res, next) => {
 BootcampsController.findById = async (req, res, next) => {
   const { id } = req.params
   try {
-    const bootcamp = await Bootcamp.findByPk(id)
+    const bootcamp = await Bootcamp.findByPk(
+      id,
+      {
+        include: [
+          {
+            model: User_bootcamp
+
+          }
+        ]
+      })
+
     if (!bootcamp) {
       return res.status(404).json({ message: 'Bootcamp no encontrado' })
     }
     return res.json(bootcamp)
   } catch (err) {
+    console.error(err)
     res.status(500).json({ message: 'Internal Server Error' })
   }
 }
