@@ -1,7 +1,7 @@
 import { where } from 'sequelize'
 import * as db from '../models/index.cjs'
 
-const { Users } = db.default
+const { Users, Bootcamp, User_bootcamp } = db.default
 
 const UsersController = {}
 
@@ -22,11 +22,43 @@ UsersController.createUser = async (req, res, next) => {
 // busca todo los usuarios
 UsersController.findAll = async (req, res, next) => {
   try {
-    const users = await Users.findAll({
-      order: [
-        ['id', 'ASC']
-      ]
-    })
+    const users = await Users.findAll(
+      {
+        attributes: {
+          order: [
+            ['id', 'ASC']
+          ],
+          exclude: [
+            "createdAt",
+            "updatedAt",
+          ]
+        },
+        include: [
+          {
+            model: User_bootcamp,
+            attributes: {
+              exclude: [
+                "user_id",
+                "bootcamp_id",
+                "createdAt",
+                "updatedAt",
+              ],
+            },
+            include: [
+              {
+                model: Bootcamp,
+                attributes: {
+                  exclude: [
+                    "createdAt",
+                    "updatedAt",
+                  ],
+                }
+              }
+            ]
+          }
+        ]
+      }
+    )
     return res.json(users)
   } catch (err) {
     return res.status(500).json({ message: 'Internal Server Error' })
@@ -37,7 +69,41 @@ UsersController.findAll = async (req, res, next) => {
 UsersController.findUserById = async (req, res, next) => {
   const { id } = req.params
   try {
-    const user = await Users.findByPk(id)
+    const user = await Users.findByPk(
+      id,
+      {
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+          ]
+        },
+        include: [
+          {
+            model: User_bootcamp,
+            attributes: {
+              exclude: [
+                "user_id",
+                "bootcamp_id",
+                "createdAt",
+                "updatedAt",
+              ],
+            },
+            include: [
+              {
+                model: Bootcamp,
+                attributes: {
+                  exclude: [
+                    "createdAt",
+                    "updatedAt",
+                  ],
+                }
+              }
+            ]
+          }
+        ]
+      }
+    )
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' })
     }
@@ -78,5 +144,8 @@ UsersController.updateUserById = async (req, res, next) => {
     return res.status(500).json({ message: ' Internal Server Error' })
   }
 }
+
+/* "firstName": "Mateo",
+        "lastName": "Díaz", */
 
 export { UsersController }
